@@ -419,7 +419,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         resources?: array<string, scalar|Param|null>,
  *     },
  *     messenger?: bool|array{ // Messenger configuration
- *         enabled?: bool|Param, // Default: true
+ *         enabled?: bool|Param, // Default: false
  *         routing?: array<string, string|array{ // Default: []
  *             senders?: list<scalar|Param|null>,
  *         }>,
@@ -569,7 +569,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         }>,
  *     },
  *     mailer?: bool|array{ // Mailer configuration
- *         enabled?: bool|Param, // Default: true
+ *         enabled?: bool|Param, // Default: false
  *         message_bus?: scalar|Param|null, // The message bus to use. Defaults to the default bus if the Messenger component is installed. // Default: null
  *         dsn?: scalar|Param|null, // Default: null
  *         transports?: array<string, scalar|Param|null>,
@@ -610,7 +610,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         decryption_env_var?: scalar|Param|null, // Default: "base64:default::SYMFONY_DECRYPTION_SECRET"
  *     },
  *     notifier?: bool|array{ // Notifier configuration
- *         enabled?: bool|Param, // Default: true
+ *         enabled?: bool|Param, // Default: false
  *         message_bus?: scalar|Param|null, // The message bus to use. Defaults to the default bus if the Messenger component is installed. // Default: null
  *         chatter_transports?: array<string, scalar|Param|null>,
  *         texter_transports?: array<string, scalar|Param|null>,
@@ -1455,6 +1455,97 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     generate_final_classes?: bool|Param, // Default: true
  *     generate_final_entities?: bool|Param, // Default: false
  * }
+ * @psalm-type BaldinofRoadRunnerConfig = array{
+ *     kernel_reboot?: array{
+ *         strategy?: list<scalar|Param|null>,
+ *         allowed_exceptions?: list<scalar|Param|null>,
+ *         max_jobs?: scalar|Param|null, // Only used when `reboot_kernel.strategy: max_jobs`. Maximum numbers of jobs before kernel reboot // Default: 1000
+ *         max_jobs_dispersion?: scalar|Param|null, // Only used when `reboot_kernel.strategy: max_jobs`. Dispersion persent // Default: 0.2
+ *         memory_threshold_mb?: scalar|Param|null, // Only used when `reboot_kernel.strategy: memory`. Memory threshold in megabytes // Default: 128
+ *     },
+ *     middlewares?: list<scalar|Param|null>,
+ *     interceptors?: list<scalar|Param|null>,
+ *     default_integrations?: bool|Param, // Default: true
+ *     metrics?: array{
+ *         enabled?: bool|Param, // Default: false
+ *         collect?: list<array{ // Default: []
+ *             type?: "counter"|"histogram"|"gauge"|"summary"|Param,
+ *             help?: scalar|Param|null, // Default: null
+ *             namespace?: scalar|Param|null, // Default: null
+ *             subsystem?: scalar|Param|null, // Default: null
+ *             labels?: list<scalar|Param|null>,
+ *             buckets?: list<float|Param>,
+ *         }>,
+ *     },
+ *     kv?: array{
+ *         storages?: list<scalar|Param|null>,
+ *     },
+ *     temporal?: array{
+ *         default_client?: scalar|Param|null, // Default: "default"
+ *         clients?: array<string, array{ // Default: {"default":{"namespace":"default","address":"localhost:7233"}}
+ *             address?: scalar|Param|null, // Default: "localhost:7233"
+ *             namespace?: scalar|Param|null, // Default: "default"
+ *             crt?: scalar|Param|null,
+ *             client_key?: scalar|Param|null,
+ *             client_pem?: scalar|Param|null,
+ *             override_server_name?: scalar|Param|null,
+ *             identity?: scalar|Param|null,
+ *             interceptors?: list<scalar|Param|null>,
+ *             query_reject_condition?: 0|1|2|3|Param,
+ *         }>,
+ *         workers?: array<string, array{ // Default: {"default":{"queue":"default","exception_interceptor":"temporal.exception_interceptor","options":{"max_concurrent_activity_execution_size":0,"worker_activities_per_second":0,"max_concurrent_local_activity_execution_size":0,"worker_local_activities_per_second":0,"task_queue_activities_per_second":0,"max_concurrent_activity_task_pollers":0,"max_concurrent_workflow_task_execution_size":0,"max_concurrent_workflow_task_pollers":0,"sticky_schedule_to_start_timeout":0,"worker_stop_timeout":0,"enable_session_worker":false,"session_resource_id":null,"max_concurrent_session_execution_size":1000},"default_interceptors":true,"interceptors":[]}}
+ *             queue?: scalar|Param|null, // Default: "default"
+ *             exception_interceptor?: scalar|Param|null, // Default: "temporal.exception_interceptor"
+ *             options?: array{
+ *                 max_concurrent_activity_execution_size?: int|Param, // Default: 0
+ *                 worker_activities_per_second?: float|Param, // Default: 0
+ *                 max_concurrent_local_activity_execution_size?: int|Param, // Default: 0
+ *                 worker_local_activities_per_second?: float|Param, // Default: 0
+ *                 task_queue_activities_per_second?: float|Param, // Default: 0
+ *                 max_concurrent_activity_task_pollers?: int|Param, // Default: 0
+ *                 max_concurrent_workflow_task_execution_size?: int|Param, // Default: 0
+ *                 max_concurrent_workflow_task_pollers?: int|Param, // Default: 0
+ *                 sticky_schedule_to_start_timeout?: int|Param, // Default: 0
+ *                 worker_stop_timeout?: int|Param, // Default: 0
+ *                 enable_session_worker?: bool|Param, // Default: false
+ *                 session_resource_id?: scalar|Param|null, // Default: null
+ *                 max_concurrent_session_execution_size?: int|Param, // Default: 1000
+ *             },
+ *             default_interceptors?: bool|Param, // Default: true
+ *             interceptors?: list<scalar|Param|null>,
+ *         }>,
+ *     },
+ * }
+ * @psalm-type MercureConfig = array{
+ *     hubs?: array<string, array{ // Default: []
+ *         url?: scalar|Param|null, // URL of the hub's publish endpoint
+ *         public_url?: scalar|Param|null, // URL of the hub's public endpoint // Default: null
+ *         jwt?: string|array{ // JSON Web Token configuration.
+ *             value?: scalar|Param|null, // JSON Web Token to use to publish to this hub.
+ *             provider?: scalar|Param|null, // The ID of a service to call to provide the JSON Web Token.
+ *             factory?: scalar|Param|null, // The ID of a service to call to create the JSON Web Token.
+ *             publish?: list<scalar|Param|null>,
+ *             subscribe?: list<scalar|Param|null>,
+ *             secret?: scalar|Param|null, // The JWT Secret to use.
+ *             passphrase?: scalar|Param|null, // The JWT secret passphrase. // Default: ""
+ *             algorithm?: scalar|Param|null, // The algorithm to use to sign the JWT // Default: "hmac.sha256"
+ *         },
+ *         jwt_provider?: scalar|Param|null, // Deprecated: The child node "jwt_provider" at path "mercure.hubs..jwt_provider" is deprecated, use "jwt.provider" instead. // The ID of a service to call to generate the JSON Web Token.
+ *         bus?: scalar|Param|null, // Name of the Messenger bus where the handler for this hub must be registered. Default to the default bus if Messenger is enabled.
+ *     }>,
+ *     default_hub?: scalar|Param|null,
+ *     default_cookie_lifetime?: int|Param, // Default lifetime of the cookie containing the JWT, in seconds. Defaults to the value of "framework.session.cookie_lifetime". // Default: null
+ *     enable_profiler?: bool|Param, // Deprecated: The child node "enable_profiler" at path "mercure.enable_profiler" is deprecated. // Enable Symfony Web Profiler integration.
+ * }
+ * @psalm-type SymfonycastsTailwindConfig = array{
+ *     input_css?: list<scalar|Param|null>,
+ *     config_file?: scalar|Param|null, // Path to the tailwind.config.js file // Default: "%kernel.project_dir%/tailwind.config.js"
+ *     binary?: scalar|Param|null, // The tailwind binary to use instead of downloading a new one // Default: null
+ *     binary_version?: scalar|Param|null, // Tailwind CLI version to download - null means the latest version // Default: null
+ *     binary_platform?: "auto"|"linux-arm64"|"linux-arm64-musl"|"linux-x64"|"linux-x64-musl"|"macos-arm64"|"macos-x64"|"windows-x64"|Param, // Tailwind CLI platform to download - "auto" will try to detect the platform automatically // Default: "auto"
+ *     postcss_config_file?: scalar|Param|null, // Path to PostCSS config file which is passed to the Tailwind CLI // Default: null
+ *     strict_mode?: bool|Param|null, // When enabled, an exception will be thrown if there are no built assets (default: false in `test` env, true otherwise) // Default: null
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1468,6 +1559,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     twig_extra?: TwigExtraConfig,
  *     security?: SecurityConfig,
  *     monolog?: MonologConfig,
+ *     baldinof_road_runner?: BaldinofRoadRunnerConfig,
+ *     mercure?: MercureConfig,
+ *     symfonycasts_tailwind?: SymfonycastsTailwindConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1484,6 +1578,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *         maker?: MakerConfig,
+ *         baldinof_road_runner?: BaldinofRoadRunnerConfig,
+ *         mercure?: MercureConfig,
+ *         symfonycasts_tailwind?: SymfonycastsTailwindConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1498,6 +1595,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
+ *         baldinof_road_runner?: BaldinofRoadRunnerConfig,
+ *         mercure?: MercureConfig,
+ *         symfonycasts_tailwind?: SymfonycastsTailwindConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1513,6 +1613,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
+ *         baldinof_road_runner?: BaldinofRoadRunnerConfig,
+ *         mercure?: MercureConfig,
+ *         symfonycasts_tailwind?: SymfonycastsTailwindConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

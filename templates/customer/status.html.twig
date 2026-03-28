@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order #{{ order.id }} — Temporal Pizza{% endblock %}
+
+{% block body %}
+<div {{ turbo_stream_listen('pizza-order-' ~ order.id) }}></div>
+
+<div class="max-w-xl mx-auto">
+    <div class="mb-6">
+        <a href="{{ path('customer_menu') }}" class="text-tp-muted hover:text-tp-purple-light text-sm transition-colors">← Back to menu</a>
+    </div>
+
+    <h2 class="text-3xl font-black text-tp-text mb-6">Order #{{ order.id }}</h2>
+
+    <div class="bg-tp-surface rounded-2xl border border-tp-border p-6 mb-4">
+        <h3 class="font-bold text-lg mb-4 text-tp-text">🍕 Items</h3>
+        <ul class="divide-y divide-tp-border">
+            {% for item in order.items %}
+            <li class="py-2 flex justify-between text-sm">
+                <span class="text-tp-text">{{ item.pizza.name }}</span>
+                <span class="text-tp-muted">× {{ item.quantity }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="bg-tp-surface rounded-2xl border border-tp-border p-6 mb-4">
+        {% include 'customer/_order_status.html.twig' %}
+    </div>
+
+    <div class="bg-tp-surface rounded-2xl border border-tp-border p-6">
+        <h3 class="font-bold text-lg mb-4 text-tp-text">📋 Order log</h3>
+        <ul id="order-{{ order.id }}-logs" class="space-y-2">
+            {% for log in order.logs|reverse %}
+            <li class="flex gap-3 text-sm">
+                <span class="text-tp-muted shrink-0 font-mono text-xs pt-1">{{ log.createdAt|date('H:i:s') }}</span>
+                <span class="text-tp-text">{{ log.message }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

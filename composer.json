@@ -1,11 +1,18 @@
 {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/crazy-weasel/roadrunner-bundle"
+        }
+    ],
     "type": "project",
     "license": "proprietary",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.4",
         "ext-ctype": "*",
+        "ext-grpc": "*",
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^3.2",
         "doctrine/doctrine-migrations-bundle": "^4.0",
@@ -15,7 +22,6 @@
         "symfony/asset": "8.0.*",
         "symfony/asset-mapper": "8.0.*",
         "symfony/console": "8.0.*",
-        "symfony/doctrine-messenger": "8.0.*",
         "symfony/dotenv": "8.0.*",
         "symfony/expression-language": "8.0.*",
         "symfony/flex": "^2",
@@ -23,10 +29,8 @@
         "symfony/framework-bundle": "8.0.*",
         "symfony/http-client": "8.0.*",
         "symfony/intl": "8.0.*",
-        "symfony/mailer": "8.0.*",
         "symfony/mime": "8.0.*",
         "symfony/monolog-bundle": "^3.0|^4.0",
-        "symfony/notifier": "8.0.*",
         "symfony/process": "8.0.*",
         "symfony/property-access": "8.0.*",
         "symfony/property-info": "8.0.*",
@@ -42,7 +46,12 @@
         "symfony/web-link": "8.0.*",
         "symfony/yaml": "8.0.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "baldinof/roadrunner-bundle": "dev-feat/implement-temporal",
+        "symfony/mercure": ">=0.7.2",
+        "symfony/mercure-bundle": "^0.4.2",
+        "symfonycasts/tailwind-bundle": "^0.12.0",
+        "temporal/sdk": "^2.0"
     },
     "config": {
         "allow-plugins": {
@@ -98,6 +107,7 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
         "phpunit/phpunit": "^13.0",
         "symfony/browser-kit": "8.0.*",
         "symfony/css-selector": "8.0.*",

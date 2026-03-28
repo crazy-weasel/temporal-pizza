@@ -1,0 +1,64 @@
+<div id="order-card-{{ order.id }}" class="bg-tp-surface rounded-2xl border border-tp-border p-5 hover:border-tp-purple transition-colors">
+    <div class="mb-3">
+        <span class="text-xs font-bold text-tp-green uppercase tracking-wide">Order #{{ order.id }}</span>
+        <div class="text-sm text-tp-muted mt-0.5 truncate">{{ order.customer }}</div>
+    </div>
+
+    <ul class="text-sm divide-y divide-tp-border mb-4">
+        {% for item in order.items %}
+        <li class="py-1.5 flex justify-between">
+            <span class="text-tp-text">{{ item.pizza.name }}</span>
+            <span class="text-tp-muted">× {{ item.quantity }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="text-sm text-tp-muted mb-4">
+        {% for i in 1..order.totalCoins %}<span style="margin-left: {{ i == 1 ? 0 : -10 }}px; z-index: {{ order.totalCoins - i + 1 }}; position: relative;">🪙</span>{% endfor %}
+    </div>
+
+    {% if order.status.value == 'BAKING' %}
+        <div class="text-xs text-tp-muted text-center">
+            Baking done in <span data-controller="countdown">{{ pizza_baking_time }}</span>.
+        </div>
+    {% endif %}
+
+    {% if order.status.value == 'WAITING_REST' %}
+    <div class="flex gap-2">
+        <form method="post" action="{{ path('restaurant_confirm', {id: order.id}) }}" class="flex-1">
+            <input type="hidden" name="status" value="ACCEPTED">
+            <button class="w-full bg-tp-green text-tp-bg rounded-xl py-2 text-sm font-bold hover:opacity-90 active:scale-95 transition-all">
+                ✓ Accept
+            </button>
+        </form>
+        <form method="post" action="{{ path('restaurant_confirm', {id: order.id}) }}" class="flex-1">
+            <input type="hidden" name="status" value="DENIED">
+            <button class="w-full bg-tp-surface-raised border border-tp-border text-tp-muted rounded-xl py-2 text-sm font-bold hover:text-tp-text hover:border-tp-muted active:scale-95 transition-all">
+                ✗ Deny
+            </button>
+        </form>
+    </div>
+    <div class="text-xs text-tp-muted text-center mt-2">
+        Ends in <span data-controller="countdown">{{ pizza_restaurant_timeout }}</span>.
+    </div>
+    {% elseif order.status.value == 'WAITING_DRIVER' %}
+    <form method="post" action="{{ path('restaurant_assign_driver', {id: order.id}) }}" class="flex flex-col gap-2">
+        <select name="driverName" class="w-full bg-tp-bg border border-tp-border rounded-xl px-3 py-2 text-sm text-tp-text focus:outline-none focus:ring-2 focus:ring-tp-purple">
+            <option>Mario</option>
+            <option>Luigi</option>
+            <option>Toad</option>
+            <option>Yoshi</option>
+            <option>Wario</option>
+        </select>
+        <button class="w-full bg-tp-purple text-white rounded-xl px-4 py-2 text-sm font-bold hover:bg-tp-purple-hover active:scale-95 transition-all">
+            🏍️ Assign Driver
+        </button>
+    </form>
+    {% elseif order.status.value == 'DELIVERING' %}
+    <form method="post" action="{{ path('restaurant_deliver', {id: order.id}) }}">
+        <button class="w-full bg-tp-purple text-white rounded-xl py-2 text-sm font-bold hover:bg-tp-purple-hover active:scale-95 transition-all">
+            ✅ Mark Delivered
+        </button>
+    </form>
+    {% endif %}
+</div>

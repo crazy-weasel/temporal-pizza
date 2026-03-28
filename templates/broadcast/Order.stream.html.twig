@@ -1,0 +1,35 @@
+{% block create %}{% endblock %}
+
+{% block update %}
+{{- '<!-- customer status page -->' }}
+<turbo-stream action="replace" target="order-{{ entity.id }}-status">
+    <template>
+        {% include 'customer/_order_status.html.twig' with {order: entity} %}
+    </template>
+</turbo-stream>
+
+<turbo-stream action="replace" target="order-{{ entity.id }}-logs">
+    <template>
+        <ul id="order-{{ entity.id }}-logs" class="space-y-2">
+            {% for log in entity.logs|reverse %}
+            <li class="flex gap-3 text-sm">
+                <span class="text-gray-400 shrink-0 font-mono text-xs pt-1">{{ log.createdAt|date('H:i:s') }}</span>
+                <span>{{ log.message }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </template>
+</turbo-stream>
+
+{{- '<!-- restaurant dashboard -->' }}
+<turbo-stream action="remove" target="order-card-{{ entity.id }}"></turbo-stream>
+{% if entity.status.value in ['WAITING_REST', 'BAKING', 'WAITING_DRIVER', 'DELIVERING'] %}
+<turbo-stream action="prepend" target="orders-{{ entity.status.value }}">
+    <template>
+        {% include 'restaurant/_order_card.html.twig' with {order: entity} %}
+    </template>
+</turbo-stream>
+{% endif %}
+{% endblock %}
+
+{% block remove %}{% endblock %}

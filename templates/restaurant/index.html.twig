@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}🍳 Restaurant Dashboard{% endblock %}
+
+{% block body %}
+<div {{ turbo_stream_listen('pizza-orders') }}></div>
+
+<h2 class="text-3xl font-black text-tp-text mb-6">🍳 Restaurant Dashboard</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    <div>
+        <h3 class="text-xs font-bold text-tp-green uppercase tracking-widest mb-3 text-center">⏳ Incoming</h3>
+        <div id="orders-WAITING_REST" class="space-y-4">
+            {% for order in orders %}
+                {% if order.status.value == 'WAITING_REST' %}
+                    {% include 'restaurant/_order_card.html.twig' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div>
+        <h3 class="text-xs font-bold text-tp-green uppercase tracking-widest mb-3 text-center">🔥 Baking</h3>
+        <div id="orders-BAKING" class="space-y-4">
+            {% for order in orders %}
+                {% if order.status.value == 'BAKING' %}
+                    {% include 'restaurant/_order_card.html.twig' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div>
+        <h3 class="text-xs font-bold text-tp-green uppercase tracking-widest mb-3 text-center">🏍️ Find a Driver</h3>
+        <div id="orders-WAITING_DRIVER" class="space-y-4">
+            {% for order in orders %}
+                {% if order.status.value == 'WAITING_DRIVER' %}
+                    {% include 'restaurant/_order_card.html.twig' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div>
+        <h3 class="text-xs font-bold text-tp-green uppercase tracking-widest mb-3 text-center">🛵 Delivering</h3>
+        <div id="orders-DELIVERING" class="space-y-4">
+            {% for order in orders %}
+                {% if order.status.value == 'DELIVERING' %}
+                    {% include 'restaurant/_order_card.html.twig' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% block create %}
+<turbo-stream action="prepend" target="order-{{ entity.owner.id }}-logs">
+    <template>
+        <li class="flex gap-3 text-sm">
+            <span class="text-gray-400 shrink-0 font-mono text-xs pt-1">{{ entity.createdAt|date('H:i:s') }}</span>
+            <span>{{ entity.message }}</span>
+        </li>
+    </template>
+</turbo-stream>
+{% endblock %}
+
+{% block update %}{% endblock %}
+{% block remove %}{% endblock %}

@@ -1,5 +1,10 @@
 twig:
     file_name_pattern: '*.twig'
+    globals:
+        pizza_payment_timeout: '%pizza.payment_timeout%'
+        pizza_restaurant_timeout: '%pizza.restaurant_timeout%'
+        pizza_baking_time: '%pizza.baking_time%'
+        pizza_refund_time: '%pizza.refund_time%'
 
 when@test:
     twig:

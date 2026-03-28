@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}🍕 Temporal Pizza — Home{% endblock %}
+
+{% block body %}
+<div class="flex flex-col items-center justify-center gap-10 py-20 text-center">
+    <div>
+        <div class="text-8xl mb-6">🍕</div>
+        <h1 class="text-5xl font-black text-tp-green mb-3">Temporal Pizza</h1>
+        <p class="text-tp-muted text-lg">Ridiculously good. Unreasonably durable.</p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4">
+        <a href="{{ path('customer_menu') }}"
+           class="flex flex-col items-center gap-2 bg-tp-surface border border-tp-border rounded-2xl px-10 py-8 hover:border-tp-purple hover:bg-tp-surface-raised transition-all group cursor-pointer">
+            <span class="text-5xl">🧑‍💼</span>
+            <span class="text-xl font-bold text-tp-text">I'm the Customer</span>
+            <span class="text-sm text-tp-muted group-hover:text-tp-purple-light transition-colors">Browse menu & order</span>
+        </a>
+
+        <a href="{{ path('restaurant') }}"
+           class="flex flex-col items-center gap-2 bg-tp-surface border border-tp-border rounded-2xl px-10 py-8 hover:border-tp-purple hover:bg-tp-surface-raised transition-all group cursor-pointer">
+            <span class="text-5xl">🍳</span>
+            <span class="text-xl font-bold text-tp-text">I'm the Restaurant</span>
+            <span class="text-sm text-tp-muted group-hover:text-tp-purple-light transition-colors">Manage incoming orders</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% set statusLabels = {
+    'PENDING':        '⏳ Pending',
+    'WAITING_REST':   '🍳 Waiting for restaurant',
+    'BAKING':         '🔥 Baking',
+    'WAITING_DRIVER': '🏍️  Waiting for driver',
+    'DELIVERING':     '🛵 On the way!',
+    'DELIVERED':      '✅ Delivered!',
+    'FAILED':         '❌ Failed',
+} %}
+{% set paymentLabels = {
+    'PENDING':  '⏳ Pending',
+    'PAID':     '✅ Paid',
+    'FAILED':   '❌ Failed',
+    'TIMEOUT':  '⏱️  Timed out',
+    'REFUNDED': '↩️  Refunded',
+} %}
+
+<div id="order-{{ order.id }}-status">
+    <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="bg-tp-surface-raised rounded-xl p-4 border border-tp-border">
+            <div class="text-xs text-tp-muted uppercase font-semibold mb-1 tracking-wide">Order status</div>
+            <div class="text-lg font-bold text-tp-text">{{ statusLabels[order.status.value] ?? order.status.value }}</div>
+        </div>
+        <div class="bg-tp-surface-raised rounded-xl p-4 border border-tp-border">
+            <div class="text-xs text-tp-muted uppercase font-semibold mb-1 tracking-wide">Payment</div>
+            <div class="text-lg font-bold text-tp-text">{{ paymentLabels[order.paymentStatus.value] ?? order.paymentStatus.value }}</div>
+        </div>
+        <div class="bg-tp-surface-raised rounded-xl p-4 border border-tp-border">
+            <div class="text-xs text-tp-muted uppercase font-semibold mb-1 tracking-wide">Cost</div>
+            <div class="text-lg font-bold inline-flex items-center">
+                {% for i in 1..order.totalCoins %}
+                <span style="margin-left: {{ i == 1 ? 0 : -10 }}px; z-index: {{ order.totalCoins - i + 1 }}; position: relative;">🪙</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="bg-tp-surface-raised rounded-xl p-4 border border-tp-border">
+            <div class="text-xs text-tp-muted uppercase font-semibold mb-1 tracking-wide">Customer</div>
+            <div class="text-sm font-medium truncate text-tp-text">{{ order.customer }}</div>
+        </div>
+    </div>
+
+    {% if order.paymentStatus.value == 'PENDING' and order.status.value == 'PENDING' %}
+    <form method="post" action="{{ path('customer_payment', {id: order.id}) }}" class="flex gap-3 mb-4">
+        <button type="submit" name="status" value="SUCCESS"
+                class="flex-1 bg-tp-green text-tp-bg rounded-xl py-3 font-bold hover:opacity-90 active:scale-95 transition-all">
+            💳 Pay Now
+        </button>
+        <button type="submit" name="status" value="DECLINED"
+                class="flex-1 bg-tp-surface-raised border border-tp-border text-tp-muted rounded-xl py-3 font-bold hover:text-tp-text hover:border-tp-muted active:scale-95 transition-all">
+            ✗ Decline
+        </button>
+    </form>
+    {% endif %}
+</div>
